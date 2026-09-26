@@ -1,69 +1,218 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %} {{ category.category_name }} Posts -
+Django Blog {% endblock %} {% block content %}
 
-{% block title %}
-{{ category.category_name}} Posts - Django Blog
-{% endblock %}
+<div class="container py-5">
+  <!-- =========================
+       CATEGORY HEADER
+  ========================== -->
 
-{% block content %}
+  <div class="mb-5">
+    <span
+      class="text-warning text-uppercase fw-bold small"
+      style="letter-spacing: 1.5px"
+    >
+      Category
+    </span>
 
-    <div class="container">
-      <!-- Main Posts Grid & Sidebar -->
-      <main role="main" class="p-0">
-        <div class="row g-5">
-          <!-- Category Feed Column -->
-          <div class="col-md-12 blog-main">
-            {% for post in posts %}
-            <article
-              class="blog-post p-4 p-md-5 bg-white border rounded-4 shadow-sm mb-4 custom-card transition-all"
-            >
-              <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-warning text-dark"
-                  >{{ post.category_name }}</span
-                >
-                <span class="text-muted small"
-                  >• {{ post.created_at | timesince }} ago</span
-                >
-              </div>
-              <h2 class="blog-post-title font-serif fw-bold mb-2">
-                {{ post.title }}
-              </h2>
-              <p class="blog-post-meta text-muted small pb-3 border-bottom">
-                {{ post.created_at | date:"F j, Y" }} by
-                <a
-                  href="#"
-                  class="text-warning text-decoration-none fw-semibold"
-                  >{{ post.author }}</a
-                >
-              </p>
+    <div class="d-flex align-items-center mt-2">
+      <h1
+        class="display-5 fw-bold mb-0"
+        style="font-family: &quot;Playfair Display&quot;, serif"
+      >
+        {{ category.category_name }}
+      </h1>
 
-              <p class="card-text text-secondary mb-3">
-                {{ post.short_description }}
-              </p>
+      <div class="flex-grow-1 ms-4 border-bottom"></div>
+    </div>
 
-              <a
-                href="#"
-                class="btn btn-outline-warning text-dark font-weight-semibold btn-sm rounded-pill mt-2"
-                >Read Full Post →</a
-              >
-            </article>
-            {% empty %}
-            <div class="p-5 bg-white border rounded-4 text-center shadow-sm">
-              <h4 class="font-serif fw-bold text-muted mb-2">
-                No Articles Found
-              </h4>
-              <p class="text-secondary mb-3">
-                There are currently no published posts in the
-                <strong>{{ category.category_name }}</strong> category.
-              </p>
-              <a
-                href="/"
-                class="btn btn-warning text-white btn-sm rounded-pill px-4"
-                >Back to All Articles</a
-              >
+    <p class="text-secondary mt-3 mb-0">
+      Explore all articles published under
+      <strong>{{ category.category_name }}</strong>.
+    </p>
+  </div>
+
+  <!-- =========================
+       POSTS
+  ========================== -->
+
+  <div class="row g-5">
+    <!-- Articles -->
+
+    <main class="col-lg-8">
+      {% for post in posts %}
+
+      <article class="border-bottom pb-4 mb-4">
+        <div class="row g-4">
+          <!-- Featured Image -->
+
+          {% if post.featured_image %}
+
+          <div class="col-md-4">
+            <a href="{% url 'post_detail' post.slug %}">
+              <img
+                src="{{ post.featured_image.url }}"
+                alt="{{ post.title }}"
+                class="img-fluid rounded-3 w-100"
+                style="height: 190px; object-fit: cover"
+              />
+            </a>
+          </div>
+
+          {% endif %}
+
+          <!-- Article Content -->
+
+          <div class="col-md-8">
+            <!-- Meta -->
+
+            <div class="small mb-2">
+              <span class="text-warning fw-semibold text-capitalize">
+                {{ post.category.category_name }}
+              </span>
+
+              <span class="text-muted mx-2"> • </span>
+
+              <span class="text-muted">
+                {{ post.created_at|timesince }} ago
+              </span>
             </div>
-            {% endfor %}
+
+            <!-- Title -->
+
+            <h2
+              class="h3 fw-bold mb-2"
+              style="
+                font-family: &quot;Playfair Display&quot;, serif;
+                line-height: 1.3;
+              "
+            >
+              <a
+                href="{% url 'post_detail' post.slug %}"
+                class="text-dark text-decoration-none"
+              >
+                {{ post.title }}
+              </a>
+            </h2>
+
+            <!-- Author -->
+
+            <p class="small text-muted mb-3">
+              By
+
+              <span class="text-dark fw-semibold"> {{ post.author }} </span>
+
+              <span class="mx-2"> • </span>
+
+              {{ post.created_at|date:"F j, Y" }}
+            </p>
+
+            <!-- Description -->
+
+            <p class="text-secondary mb-3">
+              {{ post.short_description|truncatewords:30 }}
+            </p>
+
+            <!-- Read -->
+
+            <a
+              href="{% url 'post_detail' post.slug %}"
+              class="text-warning fw-semibold text-decoration-none"
+            >
+              Continue reading →
+            </a>
           </div>
         </div>
-      </main>
-    </div>
+      </article>
+
+      {% empty %}
+
+      <!-- Empty State -->
+
+      <div class="text-center py-5 border rounded-4">
+        <div class="mb-3">
+          <span
+            class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light"
+            style="width: 70px; height: 70px; font-size: 28px"
+          >
+            📚
+          </span>
+        </div>
+
+        <h3
+          class="fw-bold mb-2"
+          style="font-family: &quot;Playfair Display&quot;, serif"
+        >
+          No Articles Found
+        </h3>
+
+        <p class="text-secondary mb-4">
+          There are currently no published posts in
+          <strong>{{ category.category_name }}</strong>.
+        </p>
+
+        <a
+          href="/"
+          class="btn btn-warning text-dark rounded-pill px-4 fw-semibold"
+        >
+          Back to All Articles
+        </a>
+      </div>
+
+      {% endfor %}
+    </main>
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="col-lg-4">
+      <!-- Category Information -->
+
+      <div class="border rounded-4 p-4 mb-4">
+        <span
+          class="text-warning text-uppercase fw-bold small"
+          style="letter-spacing: 1px"
+        >
+          Currently browsing
+        </span>
+
+        <h3
+          class="fw-bold mt-2 mb-3"
+          style="font-family: &quot;Playfair Display&quot;, serif"
+        >
+          {{ category.category_name }}
+        </h3>
+
+        <p class="text-secondary mb-0">
+          Browse the latest articles and stories from this category.
+        </p>
+      </div>
+
+      <!-- Other Categories -->
+
+      <div class="border rounded-4 p-4">
+        <h4
+          class="fw-bold mb-3"
+          style="font-family: &quot;Playfair Display&quot;, serif"
+        >
+          Explore Categories
+        </h4>
+
+        <div class="d-flex flex-wrap gap-2">
+          {% for cat in categories %}
+
+          <a
+            href="{% url 'post_by_category' cat.id %}"
+            class="btn btn-sm {% if cat.id == category.id %}btn-warning{% else %}btn-light border{% endif %} rounded-pill px-3"
+          >
+            {{ cat.category_name }}
+          </a>
+
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Blog, Category
+from django.db.models import Q
 
 
 
@@ -17,4 +18,21 @@ def posts_by_category(request, category_id):
 
 
 def blogs(request, slug):
-    return render(request, 'blogs.html')
+    single_blog = get_object_or_404(Blog, slug=slug, status="published").strip()
+    context = {
+        'single_blog': single_blog
+    }
+    return render(request, 'single_blog.html', context)
+
+
+
+def search(request):
+    keywords = request.GET.get('keyword')
+    blogs = Blog.objects.filter(Q(title__icontains=keywords) | Q(short_description__icontains=keywords) | Q(blog_body__icontains=keywords), status="published")
+
+    context = {
+        'blogs': blogs,
+        'keywords': keywords
+    }
+
+    return render(request, 'search.html', context)

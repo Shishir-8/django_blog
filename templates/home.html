@@ -1,166 +1,428 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block title %}
 Home - Django Blog
 {% endblock %}
 
-
 {% block content %}
 
-<div class="container">
-  <!-- Hero Section (First Featured Post) -->
+<div class="container py-5">
+
+  <!-- =========================
+       FEATURED ARTICLE
+  ========================== -->
+
   {% for post in featured_posts %}
-   {% if forloop.first %}
-  <div
-    class="hero-jumbotron p-4 p-md-5 text-white rounded-4 shadow-lg mb-5 overflow-hidden position-relative"
-    style="background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%), url('{{ post.featured_image.url }}'); background-size: cover; background-position: center;"
-  >
-    <div class="col-md-8 px-0 position-relative z-index-2">
-      <span
-        class="badge bg-warning text-dark mb-3 px-3 py-2 text-uppercase fw-bold letter-spacing"
-        >Featured Article</span
+    {% if forloop.first %}
+
+      <section
+        class="position-relative rounded-4 overflow-hidden mb-5"
+        style="
+          min-height: 460px;
+          background-image:
+            linear-gradient(
+              to top,
+              rgba(0, 0, 0, 0.85),
+              rgba(0, 0, 0, 0.05)
+            ),
+            url('{{ post.featured_image.url }}');
+          background-size: cover;
+          background-position: center;
+        "
       >
-      <h1 class="display-4 font-serif fw-bold text-white mb-3">
-        {{ post.title }}
-      </h1>
-      <p class="lead my-3 text-light opacity-90">
-        {{ post.short_description | truncatewords:20}}
-      </p>
-      <p class="lead mb-0 mt-4">
-        <a
-          href="#"
-          class="btn btn-light text-dark fw-semibold rounded-pill px-4 py-2 shadow-sm"
-          >Continue reading →</a
+
+        <div
+          class="position-absolute bottom-0 start-0 p-4 p-md-5 text-white"
+          style="max-width: 750px;"
         >
-      </p>
-    </div>
-  </div>
-  {% endif %}
+
+          <div class="mb-3">
+
+            <span class="badge bg-warning text-dark px-3 py-2">
+              Featured
+            </span>
+
+            <span class="small text-white-50 ms-2">
+              {{ post.category.category_name }}
+            </span>
+
+          </div>
+
+          <h1
+            class="display-4 fw-bold mb-3"
+            style="
+              font-family: 'Playfair Display', serif;
+              line-height: 1.1;
+            "
+          >
+            {{ post.title }}
+          </h1>
+
+          <p class="lead text-white-50 mb-4">
+            {{ post.short_description|truncatewords:25 }}
+          </p>
+
+          <a
+            href="{% url 'post_detail' post.slug %}"
+            class="btn btn-warning text-dark rounded-pill px-4 fw-semibold"
+          >
+            Read Article →
+          </a>
+
+        </div>
+
+      </section>
+
+    {% endif %}
   {% endfor %}
 
-  <!-- Featured Posts Section Header -->
+
+  <!-- =========================
+       FEATURED POSTS
+  ========================== -->
+
   <div class="d-flex align-items-center mb-4">
-    <h2 class="h5 text-uppercase fw-bold tracking-wide text-secondary mb-0">
+
+    <h2
+      class="h4 fw-bold mb-0"
+      style="font-family: 'Playfair Display', serif;"
+    >
       Featured Posts
     </h2>
-    <div class="flex-grow-1 ms-3 border-bottom border-2"></div>
+
+    <div class="flex-grow-1 ms-3 border-bottom"></div>
+
   </div>
 
-  <!-- Secondary Featured Posts Grid -->
+
   <div class="row g-4 mb-5">
+
     {% for post in featured_posts %}
-    {% if not forloop.first %}
-    <div class="col-md-6">
-      <div
-        class="card h-100 border-0 shadow-sm rounded-3 custom-card transition-all"
-      >
-        <div class="card-body p-4 d-flex flex-column justify-content-between">
-          <div>
-            <h3 class="h4 card-title text-capitalize fw-bold mb-2">
-              {{ post.title }}
-            </h3>
-            <div class="small text-muted mb-3 d-flex align-items-center gap-2">
-              <span>{{ post.created_at | timesince }} ago</span>
-              <span>•</span>
-              <span class="fw-medium text-dark">{{ post.author }}</span>
+
+      {% if not forloop.first %}
+
+        <div class="col-md-4">
+
+          <article class="h-100 bg-white border rounded-4 overflow-hidden">
+
+            {% if post.featured_image %}
+
+              <a href="{% url 'post_detail' post.slug %}">
+
+                <img
+                  src="{{ post.featured_image.url }}"
+                  alt="{{ post.title }}"
+                  class="w-100"
+                  style="
+                    height: 220px;
+                    object-fit: cover;
+                  "
+                >
+
+              </a>
+
+            {% endif %}
+
+
+            <div class="p-4">
+
+              <div class="small mb-2">
+
+                <span class="text-warning fw-semibold">
+                  {{ post.category.category_name }}
+                </span>
+
+                <span class="text-muted mx-2">
+                  •
+                </span>
+
+                <span class="text-muted">
+                  {{ post.created_at|timesince }} ago
+                </span>
+
+              </div>
+
+
+              <h3
+                class="h4 fw-bold mb-3"
+                style="
+                  font-family: 'Playfair Display', serif;
+                  line-height: 1.3;
+                "
+              >
+                <a
+                  href="{% url 'post_detail' post.slug %}"
+                  class="text-dark text-decoration-none"
+                >
+                  {{ post.title }}
+                </a>
+              </h3>
+
+
+              <p class="text-secondary mb-4">
+                {{ post.short_description | truncatewords:25 }}
+              </p>
+
+
+              <div class="d-flex justify-content-between align-items-center">
+
+                <span class="small text-muted">
+                  By
+                  <strong class="text-dark">
+                    {{ post.author }}
+                  </strong>
+                </span>
+
+                <a
+                  href="{% url 'post_detail' post.slug %}"
+                  class="text-warning fw-semibold text-decoration-none"
+                >
+                  Read →
+                </a>
+
+              </div>
+
             </div>
-            <p class="card-text text-secondary">
-              {{ post.short_description | truncatewords:30 }}
-            </p>
-          </div>
-          <a
-            href="#"
-            class="text-warning font-weight-bold text-decoration-none mt-3 d-inline-block"
-            >Read story →</a
-          >
+
+          </article>
+
         </div>
-      </div>
-    </div>
-    {% endif %} 
+
+      {% endif %}
+
     {% endfor %}
+
   </div>
 
-  <!-- Main Content Area: Recent Articles & Sidebar -->
-  <main role="main" class="p-0">
-    <div class="row g-5">
-      <!-- Recent Articles Body Column -->
-      <div class="col-md-8 blog-main">
-        <div class="d-flex align-items-center mb-4">
-          <h2
-            class="h5 text-uppercase fw-bold tracking-wide text-secondary mb-0"
-          >
-            Recent Articles
-          </h2>
-          <div class="flex-grow-1 ms-3 border-bottom border-2"></div>
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+
+  <div class="row g-5">
+
+    <!-- Recent Articles -->
+
+    <main class="col-lg-8">
+
+      <div class="d-flex align-items-center mb-4">
+
+        <h2
+          class="h4 fw-bold mb-0"
+          style="font-family: 'Playfair Display', serif;"
+        >
+          Recent Articles
+        </h2>
+
+        <div class="flex-grow-1 ms-3 border-bottom"></div>
+
+      </div>
+
+
+      {% for post in posts %}
+
+        <article class="border-bottom pb-4 mb-4">
+
+          <div class="row g-4">
+
+            <!-- Image -->
+
+            {% if post.featured_image %}
+
+              <div class="col-md-4">
+
+                <a href="{% url 'post_detail' post.slug %}">
+
+                  <img
+                    src="{{ post.featured_image.url }}"
+                    alt="{{ post.title }}"
+                    class="img-fluid rounded-3 w-100"
+                    style="
+                      height: 180px;
+                      object-fit: cover;
+                    "
+                  >
+
+                </a>
+
+              </div>
+
+            {% endif %}
+
+
+            <!-- Content -->
+
+            <div class="col-md-8">
+
+              <div class="small mb-2">
+
+                <span class="text-warning fw-semibold">
+                  {{ post.category.category_name }}
+                </span>
+
+                <span class="text-muted mx-2">
+                  •
+                </span>
+
+                <span class="text-muted">
+                  {{ post.created_at|timesince }} ago
+                </span>
+
+              </div>
+
+
+              <h3
+                class="h4 fw-bold mb-2"
+                style="font-family: 'Playfair Display', serif;"
+              >
+                <a
+                  href="{% url 'post_detail' post.slug %}"
+                  class="text-dark text-decoration-none"
+                >
+                  {{ post.title }}
+                </a>
+              </h3>
+
+
+              <p class="small text-muted mb-2">
+                By
+                <span class="text-dark fw-semibold">
+                  {{ post.author }}
+                </span>
+              </p>
+
+
+              <p class="text-secondary mb-3">
+                {{ post.short_description|truncatewords:25 }}
+              </p>
+
+
+              <a
+                href="{% url 'post_detail' post.slug %}"
+                class="text-warning fw-semibold text-decoration-none"
+              >
+                Continue reading →
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      {% empty %}
+
+        <div class="py-5 text-center">
+          <h4 class="fw-bold">
+            No articles found
+          </h4>
+
+          <p class="text-muted">
+            There are no published articles yet.
+          </p>
         </div>
 
-        {% for post in posts %}
-        <article
-          class="blog-post p-4 p-md-5 bg-white border rounded-4 shadow-sm mb-4"
+      {% endfor %}
+
+    </main>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="col-lg-4">
+
+      <!-- About -->
+
+      <div class="border rounded-4 p-4 mb-4">
+
+        <span
+          class="text-warning text-uppercase fw-bold small"
+          style="letter-spacing: 1px;"
         >
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <span class="badge bg-light text-dark border"
-              >{{ post.category_name }}</span
-            >
-            <span class="text-muted small"
-              >{{ post.created_at | timesince}} ago</span
-            >
-          </div>
-          <h2 class="blog-post-title font-serif fw-bold mb-2">
-            {{ post.title }}
-          </h2>
-          <p class="blog-post-meta text-muted small pb-3 border-bottom">
-            {{ post.created_at }} by
-            <a href="#" class="text-warning text-decoration-none fw-semibold"
-              >{{ post.author }}</a
-            >
-          </p>
+          About
+        </span>
 
-          <p class="lead text-secondary">{{ post.short_description }}</p>
+        <h3
+          class="fw-bold mt-2 mb-3"
+          style="font-family: 'Playfair Display', serif;"
+        >
+          Django Blog
+        </h3>
 
-          <p class="text-secondary">{{ post.blog_body | truncatewords:30 }}</p>
+        <p class="text-secondary mb-0">
+          A place for sharing ideas, tutorials, technology,
+          development stories and useful knowledge.
+        </p>
+
+      </div>
+
+
+      <!-- Categories -->
+
+      <div class="border rounded-4 p-4 mb-4">
+
+        <h4
+          class="fw-bold mb-3"
+          style="font-family: 'Playfair Display', serif;"
+        >
+          Categories
+        </h4>
+
+        <div class="d-flex flex-wrap gap-2">
+
+          {% for category in categories %}
+
+            <a
+              href="{% url 'post_by_category' category.id %}"
+              class="btn btn-sm btn-light border rounded-pill"
+            >
+              {{ category.category_name }}
+            </a>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+
+      <!-- Follow -->
+
+      <div class="border rounded-4 p-4">
+
+        <h4
+          class="fw-bold mb-3"
+          style="font-family: 'Playfair Display', serif;"
+        >
+          Follow
+        </h4>
+
+        <div class="d-flex gap-2">
 
           <a
             href="#"
-            class="btn btn-outline-warning text-dark font-weight-semibold btn-sm rounded-pill mt-3"
-            >Read Full Post →</a
+            class="btn btn-outline-dark btn-sm rounded-pill px-3"
           >
-        </article>
-        {% endfor %}
+            GitHub
+          </a>
+
+          <a
+            href="#"
+            class="btn btn-outline-dark btn-sm rounded-pill px-3"
+          >
+            LinkedIn
+          </a>
+
+        </div>
+
       </div>
 
-      <!-- Blog Sidebar -->
-      <aside class="col-md-4 blog-sidebar">
-        <div class="p-4 mb-4 bg-white border rounded-4 shadow-sm">
-          <h4 class="font-serif fw-bold mb-3">About</h4>
-          <p class="text-secondary mb-0">
-            Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis
-            consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla
-            sed consectetur.
-          </p>
-        </div>
+    </aside>
 
-        <div class="p-4 bg-white border rounded-4 shadow-sm">
-          <h4 class="font-serif fw-bold mb-3">Follow Us</h4>
-          <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
-            <li>
-              <a
-                href="#"
-                class="text-decoration-none text-secondary hover-warning d-block"
-                >GitHub</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="text-decoration-none text-secondary hover-warning d-block"
-                >LinkedIn</a
-              >
-            </li>
-          </ul>
-        </div>
-      </aside>
-    </div>
-  </main>
+  </div>
+
 </div>
+
 {% endblock %}

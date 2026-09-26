@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <!-- Article Hero -->
+  <div class="row align-items-center g-5 mb-5">
+
+    <!-- Image -->
+    <div class="col-lg-7">
+
+      <div class="position-relative">
+
+        <img
+          src="{{ single_blog.featured_image.url }}"
+          alt="Django Template Inheritance"
+          class="img-fluid rounded-4 shadow-sm w-100"
+          style="height: 520px; object-fit: cover;"
+        >
+
+        <div
+          class="position-absolute bottom-0 start-0 m-4 bg-white rounded-3 shadow px-3 py-2"
+        >
+          <span class="small text-muted">
+            {{ single_blog.category }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Article Info -->
+    <div class="col-lg-5">
+
+      <div class="ps-lg-3">
+
+        <h1
+          class="display-6 fw-bold text-dark mb-4 text-capitalize"
+          style="
+            font-family: 'Playfair Display', serif;
+            line-height: 1.1;"
+        >
+          {{ single_blog.title }}
+        </h1>
+
+        <div
+          class="border-start border-warning border-3 ps-3 mb-4"
+        >
+          <p class="text-secondary mb-0 fs-6">
+            {{ single_blog.short_description }}
+          </p>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+
+          <div>
+            <div class="fw-semibold">
+             {{ single_blog.author }}
+            </div>
+
+            <div class="small text-muted">
+              {{ single_blog.created_at }}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="d-flex align-items-center text-muted small mb-4">
+
+          <span>{{ single_blog.created_at | timesince }}</span>
+
+          <span class="mx-3">•</span>
+
+          <span>{{ single_blog.category }}</span>
+
+        </div>
+
+        <button
+          class="btn btn-dark rounded-pill px-4 py-2"
+        >
+          Share Article
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+    <!-- Content -->
+    <div class="col-lg-8">
+
+      <article
+        style="
+          font-size: 1.12rem;
+          line-height: 1.9;
+        "
+      >
+
+        <p
+          id="introduction"
+          class="fs-3 fw-semibold text-dark mb-4 text-capitalize"
+          style="
+            font-family: 'Playfair Display', serif;
+            line-height: 1.5;
+          "
+        >{{ single_blog.title }}
+        </p>
+
+        <p class="text-secondary mb-4">
+         {{ single_blog.short_description }}
+        </p>
+
+
+        <p class="text-secondary mb-4">
+          {{ single_blog.blog_body }}
+        </p>
+
+        <!-- Article End -->
+        <div class="border-top pt-4">
+
+          <div class="d-flex justify-content-between align-items-center">
+
+            <span class="text-muted small">
+              Published September 25, 2026
+            </span>
+
+            <a
+              href="#"
+              class="text-dark fw-semibold text-decoration-none"
+            >
+              Back to articles →
+            </a>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
