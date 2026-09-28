@@ -1,0 +1,47 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Dashboard | Django Blog
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+  <h4 class="fw-bold mb-1">Dashboard</h4>
+  <p class="text-muted mb-0">
+    Welcome back, {{ request.user.username }}.
+  </p>
+</div>
+
+<div class="row g-4">
+
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <small class="text-muted">Total Blogs</small>
+        <h3 class="fw-bold mt-2 mb-0">24</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <small class="text-muted">Categories</small>
+        <h3 class="fw-bold mt-2 mb-0">8</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <small class="text-muted">Published</small>
+        <h3 class="fw-bold mt-2 mb-0">18</h3>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
