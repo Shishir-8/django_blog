@@ -15,29 +15,38 @@ Dashboard | Django Blog
 
 <div class="row g-4">
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card border-0 shadow-sm">
       <div class="card-body">
         <small class="text-muted">Total Blogs</small>
-        <h3 class="fw-bold mt-2 mb-0">24</h3>
+        <h3 class="fw-bold mt-2 mb-0">{{ blogs_count }}</h3>
       </div>
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card border-0 shadow-sm">
       <div class="card-body">
         <small class="text-muted">Categories</small>
-        <h3 class="fw-bold mt-2 mb-0">8</h3>
+        <h3 class="fw-bold mt-2 mb-0">{{ categories_count }}</h3>
       </div>
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card border-0 shadow-sm">
       <div class="card-body">
-        <small class="text-muted">Published</small>
-        <h3 class="fw-bold mt-2 mb-0">18</h3>
+        <small class="text-muted">Users</small>
+        <h3 class="fw-bold mt-2 mb-0">{{ user_count }}</h3>
+      </div>
+    </div>
+  </div>
+
+    <div class="col-md-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <small class="text-muted">Published Blogs</small>
+        <h3 class="fw-bold mt-2 mb-0">{{ published_blogs }}</h3>
       </div>
     </div>
   </div>

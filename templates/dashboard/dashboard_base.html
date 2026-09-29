@@ -39,19 +39,30 @@
         </div>
 
         <nav class="sidebar-nav">
-          <a href="{% url 'dashboard' %}" class="sidebar-link active">
+          <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link {% if '/dashboard/' == request.path %}bg-warning{% endif %}"
+          >
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
 
-          <a href="" class="sidebar-link">
+          <a href="{% url 'categories' %}"  class="sidebar-link {% if '/categories/' in request.path %}bg-warning{% endif %}">
+            <i class="bi bi-tags"></i>
+            <span>Categories</span>
+          </a>
+
+          <a
+            href="{% url 'blogs' %}"
+            class="sidebar-link {% if '/blogs/' in request.path %}bg-warning{% endif %}"
+          >
             <i class="bi bi-file-text"></i>
             <span>Blogs</span>
           </a>
 
-          <a href="" class="sidebar-link">
-            <i class="bi bi-tags"></i>
-            <span>Categories</span>
+          <a class="sidebar-link" href="{% url 'home' %}">
+            <i class="bi bi-browser-chrome"></i>
+            <span>Visit Website</span>
           </a>
         </nav>
 
@@ -68,7 +79,9 @@
         <!-- Header -->
         <header class="dashboard-header">
           <div>
-            <h6 class="mb-0">Welcome to Dashboard</h6>
+            <h4 class="mb-0">
+              Welcome to dashboard, {{ request.user.username }}
+            </h4>
           </div>
 
           <div class="d-flex align-items-center gap-2">
