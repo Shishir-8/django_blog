@@ -12,11 +12,15 @@ def dashboard(request):
     published_blogs = Blog.objects.filter(status="published").count()
     user_count = User.objects.all().count()
 
+    recent_blogs = Blog.objects.select_related('category').order_by('-created_at')[:5]
+
+
     context = {
         'categories_count': categories_count,
         'blogs_count': blogs_count,
         'user_count': user_count,
-        'published_blogs': published_blogs
+        'published_blogs': published_blogs,
+        'recent_blogs': recent_blogs
     }
 
     return render(request, 'dashboard/dashboard.html', context)

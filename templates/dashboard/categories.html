@@ -1,7 +1,72 @@
 {% extends 'dashboard/dashboard_base.html' %}
-
 {% block content %}
 
-<h1>categories</h1>
+<div class="container-fluid p-4">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-1">All Categories</h3>
+      <p class="text-muted small mb-0">Manage and view all product/service categories</p>
+    </div>
+    <a href="#" class="btn btn-primary btn-sm px-3 py-2 rounded-pill">
+      <i class="bi bi-plus-lg me-1"></i> Add Category
+    </a>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light border-bottom">
+          <tr class="text-uppercase text-secondary fw-semibold fs-7">
+            <th scope="col" class="py-3 px-4" style="width: 80px;">S.N</th>
+            <th scope="col" class="py-3 px-3">Category Name</th>
+            <th scope="col" class="py-3 px-3">Created At</th>
+            <th scope="col" class="py-3 px-3">Updated At</th>
+            <th scope="col" class="py-3 px-4 text-end" style="width: 140px;">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+           {% for cat in categories %}
+          <tr>
+            <td class="py-3 px-4 text-muted fw-medium">{{ forloop.counter }}</td>
+            <td class="py-3 px-3">
+              <span class="fw-semibold text-dark">{{ cat.category_name }}</span>
+            </td>
+            <td class="py-3 px-3 text-muted">
+              <small>{{ cat.created_at }}</small>
+            </td>
+            <td class="py-3 px-3 text-muted">
+              <small>{{ cat.updated_at }}</small>
+            </td>
+            <td class="py-3 px-4 text-end">
+              <div class="btn-group btn-group-sm">
+                <a href="#" class="btn btn-outline-secondary border-0 text-primary" title="Edit">
+                  <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <a href="#" class="btn btn-outline-secondary border-0 text-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Optional Card Footer / Pagination -->
+    <div class="card-footer bg-white border-top py-3 px-4 d-flex justify-content-between align-items-center">
+      <small class="text-muted">Showing 1 to 2 of 2 entries</small>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
