@@ -94,7 +94,9 @@
             </div>
 
             {% else %}
-            <a class="btn btn-success" href="{% url 'dashboard' %}">Dashboard</a>
+            {% if user.is_staff %}
+             <a class="btn btn-success" href="{% url 'dashboard' %}">Dashboard</a>
+            {% endif %}
             <a class="btn btn-warning" href="{% url 'logout' %}">Logout</a>
             {% endif %}
           </div>

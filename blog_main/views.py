@@ -19,25 +19,19 @@ def home(request):
 
 def login(request):
     if request.method == "POST":
-        form = AuthenticationForm(request, request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-
-            user = auth.authenticate(username=username, password=password)
-
-            if user is not None:
-                auth.login(request, user)
-            return redirect('dashboard')
+            user = form.get_user()
+            auth.login(request, user)
+            
+            # Simple staff check for redirect
+            if user.is_staff or user.is_superuser:
+                return redirect('dashboard')
+            return redirect('home')  # Normal users go here
     else:
         form = AuthenticationForm()
 
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'auth/login.html', context)
+    return render(request, 'auth/login.html', {'form': form})
 
 
 
