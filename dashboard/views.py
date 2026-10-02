@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from blogs.models import Blog, Category
 from django.contrib.auth.models import User
 from .decorators import dashboard_required
-from .forms import CategoryForm
-
+from .forms import CategoryForm, BlogForm
+from django.template.defaultfilters import slugify # for automatic slug generate in dashboard 
 # Create your views here.
 
 @dashboard_required
@@ -74,4 +74,54 @@ def delete_category(request, pk):
 
 @dashboard_required
 def blogs(request):
-    return render(request, 'dashboard/blogs.html')
+    blogs = Blog.objects.all()
+    context = {
+        'blogs': blogs
+    }
+    return render(request, 'dashboard/blogs.html',context)
+
+
+def add_blogs(request):
+    if request.method == "POST":
+        form = BlogForm(request.POST, request.FILES)                # request.files is used for form with image
+        if form.is_valid():
+            blog = form.save(commit=False)                             # temporarily save the form
+            blog.author = request.user                   # by doing this author is request.user who write blog saved automatically
+            blog.save()                           # by saving we get blog.id
+                                                        
+            blog.slug = f"{slugify(blog.title)-{blog.id}}"         # this makes slug unique
+            blog.save()                                                  # finaly blog is created
+            return redirect('blogs')
+        else:
+            print(form.errors)
+
+    form = BlogForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/add_blogs.html', context)
+
+
+def edit_blogs(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+
+    if request.method == "POST":
+        form = BlogForm(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            blog = form.save(commit=False)      # before saving anything commit False
+            blog.slug = f"{slugify(blog.title)}-{blog.id}"
+            blog.save()
+            return redirect('blogs')
+    else:
+        form = BlogForm(instance=blog)
+    context = {
+        'form': form,
+        'blog': blog
+    }
+    return render(request, 'dashboard/edit_blogs.html', context)
+
+
+def delete_blogs(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)
+    blog.delete()
+    return redirect('blogs')

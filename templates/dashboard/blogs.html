@@ -1,7 +1,64 @@
 {% extends 'dashboard/dashboard_base.html' %}
-
 {% block content %}
 
-<h1>Blogs</h1>
+<div class="container-fluid p-4">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold mb-1">All Blogs</h4>
+      <p class="text-muted small mb-0">Manage and view all blogs</p>
+    </div>
+    <a href="{% url 'add_blogs' %}" class="btn btn-primary btn-sm px-3 py-2 rounded-pill">
+      <i class="bi bi-plus-lg me-1"></i> Add Blog
+    </a>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light border-bottom">
+          <tr class="text-uppercase text-secondary fw-semibold fs-7">
+            <th scope="col" class="py-3 px-4" style="width: 80px;">S.N</th>
+            <th scope="col" class="py-3 px-3">Blog Name</th>
+            <th scope="col" class="py-3 px-3">Category</th>
+            <th scope="col" class="py-3 px-3">Author</th>
+            <th scope="col" class="py-3 px-3">Status</th>
+            <th scope="col" class="py-3 px-4 text-end" style="width: 140px;">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+           {% for blog in blogs %}
+          <tr>
+            <td class="py-3 px-4 text-muted fw-medium">{{ forloop.counter }}</td>
+            <td class="py-3 px-3">
+              <span class="fw-semibold text-dark">{{ blog.title }}</span>
+            </td>
+            <td class="py-3 px-3 text-muted">
+              <small>{{ blog.category }}</small>
+            </td>
+             <td class="py-3 px-3 text-muted">
+              <small>{{ blog.author }}</small>
+            </td>
+            <td class="py-3 px-3 text-muted">
+              <small>{{ blog.status }}</small>
+            </td>
+            <td class="py-3 px-4 text-end">
+              <div class="btn-group btn-group-sm">
+                <a href="{% url 'edit_blogs' blog.id %}" class="btn btn-outline-secondary border-0 text-primary" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="{% url 'delete_blogs' blog.id %}" class="btn btn-outline-secondary border-0 text-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

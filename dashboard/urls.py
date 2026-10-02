@@ -4,9 +4,14 @@ from . import views
 
 urlpatterns = [
     path('', views.dashboard, name="dashboard"),
+
     path('categories/', views.categories, name="categories"),
     path('categories/add', views.add_category, name="add_category"),
     path('categories/edit/<int:pk>/', views.edit_category, name="edit_category"),
     path('categories/delete/<int:pk>/', views.delete_category, name="delete_category"),
-    path('blogs/', views.blogs, name="blogs")
+
+    path('blogs/', views.blogs, name="blogs"),
+    path('blogs/add', views.add_blogs, name='add_blogs'),
+    path('blogs/edit/<int:pk>/', views.edit_blogs, name="edit_blogs"),
+    path('blogs/delete/<int:pk>/', views.delete_blogs, name="delete_blogs"),
 ]
