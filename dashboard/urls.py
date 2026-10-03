@@ -14,4 +14,6 @@ urlpatterns = [
     path('blogs/add', views.add_blogs, name='add_blogs'),
     path('blogs/edit/<int:pk>/', views.edit_blogs, name="edit_blogs"),
     path('blogs/delete/<int:pk>/', views.delete_blogs, name="delete_blogs"),
+
+    path('users/', views.users, name="users"),
 ]

@@ -87,9 +87,9 @@ def add_blogs(request):
         if form.is_valid():
             blog = form.save(commit=False)                             # temporarily save the form
             blog.author = request.user                   # by doing this author is request.user who write blog saved automatically
-            blog.save()                           # by saving we get blog.id
+            blog.save()                                               # by saving we get blog.id
                                                         
-            blog.slug = f"{slugify(blog.title)-{blog.id}}"         # this makes slug unique
+            blog.slug = f"{slugify(blog.title)}-{blog.id}"    # this makes slug unique
             blog.save()                                                  # finaly blog is created
             return redirect('blogs')
         else:
@@ -108,7 +108,7 @@ def edit_blogs(request, pk):
     if request.method == "POST":
         form = BlogForm(request.POST, request.FILES, instance=blog)
         if form.is_valid():
-            blog = form.save(commit=False)      # before saving anything commit False
+            blog = form.save(commit=False)  
             blog.slug = f"{slugify(blog.title)}-{blog.id}"
             blog.save()
             return redirect('blogs')
@@ -125,3 +125,11 @@ def delete_blogs(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     blog.delete()
     return redirect('blogs')
+
+
+def users(request):
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, 'dashboard/users.html', context)

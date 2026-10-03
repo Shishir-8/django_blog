@@ -100,7 +100,7 @@
             </div>
 
             <div>
-              <h6 class="mb-0 fw-bold">Django Blog</h6>
+              <h6 class="mb-0 fw-bold">Blogify</h6>
 
               <small class="text-secondary"> Admin Panel </small>
             </div>
@@ -120,10 +120,18 @@
         <nav class="px-3 pt-2 flex-grow-1">
           <a
             href="{% url 'dashboard' %}"
-            class="sidebar-link rounded-3 mb-1 {% if request.resolver_match.url_name == 'dashboard' %}bg-warning text-dark{% endif %}"
+            class="sidebar-link rounded-3 mb-1 {% if '/dashboard/' == request.path %}bg-warning text-dark{% endif %}"
           >
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
+          </a>
+
+          <a
+            href="{% url 'users' %}"
+            class="sidebar-link rounded-3 mb-1 {% if '/users/' in request.path %}bg-warning text-dark{% endif %}"
+          >
+            <i class="bi bi-people"></i>
+            <span>Users</span>
           </a>
 
           <a
