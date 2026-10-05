@@ -435,11 +435,14 @@
             Follow the latest articles, tutorials and ideas.
           </p>
 
-          <form>
+          <form method="POST" action="{% url 'newsletter_subscribe' %}">
+            {% csrf_token %}
             <input
               type="email"
+              name="email"
               class="form-control mb-2"
               placeholder="Your email address"
+              class="form-control"
             />
 
             <button type="submit" class="btn btn-warning w-100 fw-semibold">

@@ -16,4 +16,10 @@ urlpatterns = [
     path('blogs/delete/<int:pk>/', views.delete_blogs, name="delete_blogs"),
 
     path('users/', views.users, name="users"),
+    path('users/add/', views.add_user, name="add_user"),
+
+    path('newsletter/', views.newsletter, name="newsletter"),
+    path('newsletter/add', views.add_newsletter, name="add_newsletter"),
+    path('newsletter/edit/<int:pk>/', views.edit_newsletter, name="edit_newsletter"),
+    path('newsletter/delete/<int:pk>/', views.delete_newsletter, name="delete_newsletter")
 ]

@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from blogs.models import Category, Blog
 from .forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import auth
+from django.contrib import auth, messages
+from .forms import NewsletterForm
+from blogs.models import NewsletterSubscriber
 
 def home(request):
     categories = Category.objects.all()
@@ -54,4 +56,16 @@ def register(request):
 
 def logout_view(request):
     auth.logout(request)
+    return redirect('home')
+
+def newsletter_subscribe(request):
+    if request.method == "POST":
+        form = NewsletterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You have successfully subscribed!")
+        else:
+            messages.error(request, "Please enter a valid email address.")
+
     return redirect('home')

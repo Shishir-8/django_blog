@@ -34,4 +34,15 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
+
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    is_subscribed = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.email
+
+
    

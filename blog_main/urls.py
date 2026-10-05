@@ -18,5 +18,6 @@ urlpatterns = [
     path('blogs/', include('blogs.urls')),
 
     path('dashboard/', include('dashboard.urls')),
+    path('newsletter/subscribe/', views.newsletter_subscribe, name="newsletter_subscribe"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

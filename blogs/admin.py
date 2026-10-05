@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Blog
+from .models import Category, Blog, NewsletterSubscriber
 
 
 admin.site.register(Category)
@@ -12,4 +12,7 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'author', 'status', 'is_featured']
     search_fields = ['id', 'title']
     list_filter = ['category']
+
+
+admin.site.register(NewsletterSubscriber)
 
