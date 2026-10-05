@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from blogs.models import Blog, Category
 from django.contrib.auth.models import User
 from .decorators import dashboard_required
-from .forms import CategoryForm, BlogForm, AddUserForm, AddNewsletterForm
+from .forms import CategoryForm, BlogForm, AddUserForm, AddNewsletterForm, EditUserForm
 from blogs.models import NewsletterSubscriber
 from django.template.defaultfilters import slugify # for automatic slug generate in dashboard 
 # Create your views here.
@@ -53,13 +53,13 @@ def edit_category(request, pk):
     category = get_object_or_404(Category, pk=pk)
 
     if request.method == "POST":
-        form = CategoryForm(request.POST, instance=category)
+        form = EditUserForm(request.POST, instance=category)
 
         if form.is_valid():
             form.save()
             return redirect('categories')
 
-    form = CategoryForm(instance=category)
+    form = EditUserForm(instance=category)
     context = {
         'form': form,
         'category': category
@@ -137,13 +137,45 @@ def users(request):
 
 
 def add_user(request):
-    form = AddUserForm()
+    if request.method == "POST":
+        form = AddUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+        
+    else:
+        form = AddUserForm()
+
     context = {
         'form': form
     }
     return render(request, 'dashboard/add_user.html', context)
 
-# news letter crud start from here...
+def edit_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == "POST":
+        form = EditUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+  
+    else:
+        form = EditUserForm(instance=user)
+
+    context = {
+        'form': form,
+        'user': user
+    }
+    return render(request, 'dashboard/edit_user.html', context)
+
+
+def delete_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    user.delete()
+    return redirect('users')
+
+
+# news letter crud
 
 def newsletter(request):
     newsletters = NewsletterSubscriber.objects.all()
